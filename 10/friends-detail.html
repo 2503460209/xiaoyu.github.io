@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Kitty的朋友们 | Hello Kitty の 小窝</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局样式（复用原页面） */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Comic Sans MS", "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #555;
+            background-color: #fff5f8;
+            background-image: url("https://img.ixintu.com/download/jpg/202109/28/ixintu_1255666.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+            background-blend-mode: soft-light;
+            scroll-behavior: smooth;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            border-radius: 12px;
+        }
+
+        /* 导航栏样式（复用原页面） */
+        .header {
+            background-color: #ff99cc;
+            box-shadow: 0 4px 15px rgba(255, 153, 204, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .logo-text span {
+            color: #ff3385;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            color: white;
+            font-size: 1.1rem;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .nav-links a.active,
+        .nav-links a:hover {
+            background-color: white;
+            color: #ff66a3;
+            transform: translateY(-3px);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* 详情页专属样式 */
+        .detail-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(255, 153, 204, 0.2);
+            border: 3px solid #ffcce5;
+        }
+
+        .detail-breadcrumb {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ffcce5;
+        }
+
+        .detail-breadcrumb a:hover {
+            color: #ff66a3;
+            text-decoration: underline;
+        }
+
+        .detail-title {
+            font-size: 2.2rem;
+            color: #ff66a3;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(255, 153, 204, 0.2);
+        }
+
+        /* 角色介绍区域 */
+        .friends-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            padding: 20px;
+            background-color: #fff0f5;
+            border-radius: 16px;
+            border: 3px solid #ffcce5;
+        }
+
+        .friends-intro p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* 角色列表网格 */
+        .friends-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .friend-card {
+            background-color: #fff0f5;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 3px solid #ffcce5;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .friend-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(255, 153, 204, 0.3);
+            border-color: #ff99cc;
+        }
+
+        .friend-avatar {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 3px solid #ffcce5;
+        }
+
+        .friend-info {
+            padding: 20px;
+        }
+
+        .friend-name {
+            font-size: 1.4rem;
+            color: #ff66a3;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .friend-tag {
+            display: inline-block;
+            padding: 5px 12px;
+            background-color: #ffb3d9;
+            color: white;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+
+        .friend-desc {
+            color: #666;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .friend-desc strong {
+            color: #ff66a3;
+        }
+
+        /* 页脚样式（复用原页面） */
+        .footer {
+            background-color: #ff99cc;
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 60px;
+            border-top: 5px solid #ff66a3;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-about h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .footer-about p {
+            color: #fff0f5;
+        }
+
+        .footer-links ul {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: #fff0f5;
+            padding: 8px 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            border-bottom: 2px solid white;
+            padding-left: 10px;
+        }
+
+        .footer-contact p {
+            color: #fff0f5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid #ff66a3;
+            color: #fff0f5;
+            font-size: 0.9rem;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background-color: #ff99cc;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                display: none;
+                border-radius: 0 0 15px 15px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .friends-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏（和原页面一致） -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="https://c-ssl.dtstatic.com/uploads/item/201410/16/20141016023223_Ycfus.thumb.1000_0.jpeg" alt="Hello Kitty Logo">
+                <div class="logo-text">Hello<span>Kitty</span></div>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="index.html#diary">Kitty日记</a></li>
+                <li><a href="collection-detail.html">粉色收藏</a></li>
+                <li><a href="friends-detail.html" class="active">关于我</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 详情页主体内容 -->
+    <div class="detail-container">
+        <div class="detail-breadcrumb">
+            <a href="index.html">首页</a> > <span>Hello Kitty的朋友们</span>
+        </div>
+        <h1 class="detail-title"><i class="fas fa-users"></i> Hello Kitty的朋友们</h1>
+
+        <!-- 简介区域 -->
+        <div class="friends-intro">
+            <p>Hello Kitty并不是孤单的小可爱，她有一群来自三丽鸥家族的好朋友们，每个人都有独特的性格和外形，一起组成了温馨又有趣的可爱家族～</p>
+        </div>
+
+        <!-- 角色列表 -->
+        <div class="friends-grid">
+            <!-- 角色1：Mimmy（双胞胎妹妹） -->
+            <div class="friend-card">
+                <img src="https://mystickermania.com/cdn/stickers/noob-pack/sanrio-mimmy-eats-ice-cream-512x512.png" alt="Mimmy" class="friend-avatar">
+                <div class="friend-info">
+                    <h3 class="friend-name"><i class="fas fa-heart"></i> Mimmy</h3>
+                    <span class="friend-tag">双胞胎妹妹</span>
+                    <p class="friend-desc">
+                        <strong>身份：</strong>Hello Kitty的双胞胎妹妹<br>
+                        <strong>特征：</strong>扎着黄色蝴蝶结（Kitty是红色），性格文静温柔，喜欢做手工和烹饪<br>
+                        <strong>生日：</strong>1974年11月1日<br>
+                        <strong>爱好：</strong>收集可爱的发饰，和Kitty一起喝下午茶
+                    </p>
+                </div>
+            </div>
+
+            <!-- 角色2：My Melody（美乐蒂） -->
+            <div class="friend-card">
+                <img src="https://c-ssl.dtstatic.com/uploads/item/202007/06/20200706120931_vdioe.thumb.1000_0.jpg" alt="My Melody" class="friend-avatar">
+                <div class="friend-info">
+                    <h3 class="friend-name"><i class="fas fa-music"></i> My Melody</h3>
+                    <span class="friend-tag">温柔小绵羊</span>
+                    <p class="friend-desc">
+                        <strong>身份：</strong>Kitty的闺蜜，来自梦幻森林的小绵羊<br>
+                        <strong>特征：</strong>粉色头套，带着红色蝴蝶结，性格温柔善良<br>
+                        <strong>生日：</strong>1975年1月18日<br>
+                        <strong>爱好：</strong>喜欢吃草莓蛋糕，唱歌和散步
+                    </p>
+                </div>
+            </div>
+
+            <!-- 角色3：Kuromi（库洛米） -->
+            <div class="friend-card">
+                <img src="https://c-ssl.dtstatic.com/uploads/item/202004/02/20200402151213_sEEPY.thumb.1000_0.jpeg" alt="Kuromi" class="friend-avatar">
+                <div class="friend-info">
+                    <h3 class="friend-name"><i class="fas fa-moon"></i> Kuromi</h3>
+                    <span class="friend-tag">傲娇小恶魔</span>
+                    <p class="friend-desc">
+                        <strong>身份：</strong>My Melody的“竞争对手”，实则内心柔软<br>
+                        <strong>特征：</strong>黑色头套，粉色骷髅装饰，性格傲娇又可爱<br>
+                        <strong>生日：</strong>1999年10月31日<br>
+                        <strong>爱好：</strong>写日记，收集可爱的东西，偷偷关注喜欢的人
+                    </p>
+                </div>
+            </div>
+
+            <!-- 角色4：Chococat（巧克力猫） -->
+            <div class="friend-card">
+                <img src="https://ts4.tc.mm.bing.net/th/id/OIP-C.-aGS9sbOzlVaJy9AkxZXPQHaF7?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Chococat" class="friend-avatar">
+                <div class="friend-info">
+                    <h3 class="friend-name"><i class="fas fa-star"></i> Chococat</h3>
+                    <span class="friend-tag">淘气小黑猫</span>
+                    <p class="friend-desc">
+                        <strong>身份：</strong>Kitty的小伙伴，活力满满的小黑猫<br>
+                        <strong>特征：</strong>黑色皮毛，粉色鼻头，耳朵上有黄色铃铛<br>
+                        <strong>生日：</strong>1996年5月10日<br>
+                        <strong>爱好：</strong>玩毛线球，追蝴蝶，和朋友们一起冒险
+                    </p>
+                </div>
+            </div>
+
+            <!-- 角色5：BAD BADTZ-MARU（酷企鹅） -->
+            <div class="friend-card">
+                <img src="https://c-ssl.dtstatic.com/uploads/item/201711/16/20171116232436_CHhX2.thumb.400_0.jpeg" alt="BAD BADTZ-MARU" class="friend-avatar">
+                <div class="friend-info">
+                    <h3 class="friend-name"><i class="fas fa-skull"></i> BAD BADTZ-MARU</h3>
+                    <span class="friend-tag">酷帅小企鹅</span>
+                    <p class="friend-desc">
+                        <strong>身份：</strong>三丽鸥家族的酷男孩，Kitty的朋友<br>
+                        <strong>特征：</strong>黑色身体，红色眉毛，性格叛逆又讲义气<br>
+                        <strong>生日：</strong>1993年4月1日<br>
+                        <strong>爱好：</strong>滑板，打棒球，和朋友们一起耍酷
+                    </p>
+                </div>
+            </div>
+
+            <!-- 角色6：Pompompurin（布丁狗） -->
+            <div class="friend-card">
+                <img src="https://images.squarespace-cdn.com/content/v1/5b0e8599af2096a0df635bd1/1540852799938-A3GUAAYNDCXAQWYDFVMJ/Pompompurin+2.png" alt="Pompompurin" class="friend-avatar">
+                <div class="friend-info">
+                    <h3 class="friend-name"><i class="fas fa-paw"></i> Pompompurin</h3>
+                    <span class="friend-tag">呆萌布丁狗</span>
+                    <p class="friend-desc">
+                        <strong>身份：</strong>Kitty的呆萌小伙伴，喜欢布丁的小狗<br>
+                        <strong>特征：</strong>黄色皮毛，头顶有布丁形状的帽子，性格慵懒可爱<br>
+                        <strong>生日：</strong>1996年4月16日<br>
+                        <strong>爱好：</strong>吃布丁，睡觉，和朋友们一起野餐
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚（和原页面一致） -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>Hello Kitty の 小窝</h3>
+                <p>分享Hello Kitty的一切美好，记录粉色系的可爱日常～</p>
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="index.html#diary">Kitty日记</a></li>
+                    <li><a href="collection-detail.html">粉色收藏</a></li>
+                    <li><a href="friends-detail.html">关于我</a></li>
+                    <li><a href="#">联系我</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>联系我</h3>
+                <p><i class="far fa-envelope"></i> kitty@example.com</p>
+                <p><i class="fas fa-paper-plane"></i> 上海市浦东新区Kitty大道</p>
+                <p><i class="fas fa-phone"></i> 123-4567-8910</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Hello Kitty の 小窝 | 设计与开发 by Kitty迷</p>
+        </div>
+    </footer>
+
+    <!-- 移动端菜单JS -->
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+    </script>
+</body>
+</html>

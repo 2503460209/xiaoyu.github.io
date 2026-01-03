@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的Hello Kitty珍藏周边 | Hello Kitty の 小窝</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局样式（和原页面保持一致） */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Comic Sans MS", "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #555;
+            background-color: #fff5f8;
+            background-image: url("https://img.ixintu.com/download/jpg/202109/28/ixintu_1255666.jpg");
+            background-size: cover;
+            background-attachment: fixed;
+            background-blend-mode: soft-light;
+            scroll-behavior: smooth;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            border-radius: 12px;
+        }
+
+        /* 导航栏样式（复用原页面） */
+        .header {
+            background-color: #ff99cc;
+            box-shadow: 0 4px 15px rgba(255, 153, 204, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .logo-text span {
+            color: #ff3385;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            color: white;
+            font-size: 1.1rem;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .nav-links a.active,
+        .nav-links a:hover {
+            background-color: white;
+            color: #ff66a3;
+            transform: translateY(-3px);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* 详情页专属样式 */
+        .detail-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(255, 153, 204, 0.2);
+            border: 3px solid #ffcce5;
+        }
+
+        .detail-title {
+            font-size: 2.2rem;
+            color: #ff66a3;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(255, 153, 204, 0.2);
+        }
+
+        .detail-breadcrumb {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ffcce5;
+        }
+
+        .detail-breadcrumb a:hover {
+            color: #ff66a3;
+            text-decoration: underline;
+        }
+
+        /* 收藏分类标签 */
+        .collection-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            padding: 8px 20px;
+            background-color: #fff0f5;
+            border: 2px solid #ffcce5;
+            border-radius: 20px;
+            color: #ff66a3;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background-color: #ff99cc;
+            color: white;
+            border-color: #ff99cc;
+        }
+
+        /* 收藏列表 - 网格布局 */
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .collection-item {
+            border: 3px solid #ffcce5;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background-color: #fff0f5;
+        }
+
+        .collection-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(255, 153, 204, 0.3);
+            border-color: #ff99cc;
+        }
+
+        .item-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 3px solid #ffcce5;
+        }
+
+        .item-info {
+            padding: 15px;
+        }
+
+        .item-name {
+            font-size: 1.2rem;
+            color: #ff66a3;
+            margin-bottom: 8px;
+        }
+
+        .item-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            background-color: #ffb3d9;
+            color: white;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        .item-desc {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* 页脚样式（复用原页面） */
+        .footer {
+            background-color: #ff99cc;
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 60px;
+            border-top: 5px solid #ff66a3;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-about h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .footer-about p {
+            color: #fff0f5;
+        }
+
+        .footer-links ul {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: #fff0f5;
+            padding: 8px 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            border-bottom: 2px solid white;
+            padding-left: 10px;
+        }
+
+        .footer-contact p {
+            color: #fff0f5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid #ff66a3;
+            color: #fff0f5;
+            font-size: 0.9rem;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background-color: #ff99cc;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                display: none;
+                border-radius: 0 0 15px 15px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .collection-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏（和原页面一致） -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="https://c-ssl.dtstatic.com/uploads/item/201410/16/20141016023223_Ycfus.thumb.1000_0.jpeg" alt="Hello Kitty Logo">
+                <div class="logo-text">Hello<span>Kitty</span></div>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="index.html#diary">Kitty日记</a></li>
+                <li><a href="collection-detail.html" class="active">粉色收藏</a></li>
+                <li><a href="index.html#about">关于我</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 详情页主体内容 -->
+    <div class="detail-container">
+        <div class="detail-breadcrumb">
+            <a href="index.html">首页</a> > <span>我的Hello Kitty珍藏周边</span>
+        </div>
+        <h1 class="detail-title"><i class="fas fa-gem"></i> 我的Hello Kitty珍藏周边</h1>
+
+        <!-- 分类标签 -->
+        <div class="collection-tabs">
+            <button class="tab-btn active">全部</button>
+            <button class="tab-btn">限量款</button>
+            <button class="tab-btn">文具类</button>
+            <button class="tab-btn">玩偶类</button>
+            <button class="tab-btn">生活用品</button>
+        </div>
+
+        <!-- 收藏列表 -->
+        <div class="collection-grid">
+            <!-- 收藏项1 -->
+            <div class="collection-item">
+                <img src="https://cbu01.alicdn.com/img/ibank/O1CN01SLuvyG1xW9b2TH1WS_!!2215549406450-0-cib.jpg" alt="情人节限定玩偶" class="item-img">
+                <div class="item-info">
+                    <span class="item-tag">限量款</span>
+                    <h3 class="item-name">2024情人节限定玩偶</h3>
+                    <p class="item-desc">粉白爱心蝴蝶结，植绒材质超柔软，全球限量5000只，购于日本三丽鸥旗舰店。</p>
+                </div>
+            </div>
+
+            <!-- 收藏项2 -->
+            <div class="collection-item">
+                <img src="https://cbu01.alicdn.com/img/ibank/O1CN01kPVMXe1yrVX5dHBe7_!!2209622826632-0-cib.jpg" alt="Kitty文具套装" class="item-img">
+                <div class="item-info">
+                    <span class="item-tag">文具类</span>
+                    <h3 class="item-name">樱花季文具套装</h3>
+                    <p class="item-desc">包含笔记本、钢笔、便利贴、印章，樱花图案+Kitty联名，书写顺滑颜值超高。</p>
+                </div>
+            </div>
+
+            <!-- 收藏项3 -->
+            <div class="collection-item">
+                <img src="https://cbu01.alicdn.com/img/ibank/O1CN01v2dQOF1wOzt6MbDaL_!!2212513176299-0-cib.jpg" alt="玻璃水杯" class="item-img">
+                <div class="item-info">
+                    <span class="item-tag">生活用品</span>
+                    <h3 class="item-name">蝴蝶结玻璃水杯</h3>
+                    <p class="item-desc">高硼硅玻璃材质，耐热防摔，杯身印Kitty图案，带硅胶隔热套，喝水超有仪式感。</p>
+                </div>
+            </div>
+
+            <!-- 收藏项4 -->
+            <div class="collection-item">
+                <img src="https://cbu01.alicdn.com/img/ibank/O1CN0115PILT2FZVZs5h35v_!!2829888894-0-cib.jpg" alt="毛绒抱枕" class="item-img">
+                <div class="item-info">
+                    <span class="item-tag">玩偶类</span>
+                    <h3 class="item-name">云朵毛绒抱枕</h3>
+                    <p class="item-desc">短毛绒材质，填充高弹棉，抱起来超舒服，放在床头当靠枕或拍照道具都合适。</p>
+                </div>
+            </div>
+
+            <!-- 可继续添加更多收藏项 -->
+            <div class="collection-item">
+                <img src="https://cbu01.alicdn.com/img/ibank/O1CN01fxhv1u1YzaesenahN_!!3937673130-0-cib.310x310.jpg" alt="Kitty手表" class="item-img">
+                <div class="item-info">
+                    <span class="item-tag">限量款</span>
+                    <h3 class="item-name">复古石英手表</h3>
+                    <p class="item-desc">粉色表盘+Kitty指针，金属表带，防水设计，2023年周年限定款，日常佩戴超百搭。</p>
+                </div>
+            </div>
+
+            <div class="collection-item">
+                <img src="https://cbu01.alicdn.com/img/ibank/O1CN01IeRBFc23cSmXHBWev_!!2218818837276-0-cib.jpg?x-oss-process=image/format,png" alt="Kitty马克杯" class="item-img">
+                <div class="item-info">
+                    <span class="item-tag">生活用品</span>
+                    <h3 class="item-name">陶瓷马克杯</h3>
+                    <p class="item-desc">手绘Kitty图案，陶瓷釉面光滑，容量350ml，适合泡咖啡、牛奶，微波炉可用。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚（和原页面一致） -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>Hello Kitty の 小窝</h3>
+                <p>分享Hello Kitty的一切美好，记录粉色系的可爱日常～</p>
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="index.html#diary">Kitty日记</a></li>
+                    <li><a href="collection-detail.html">粉色收藏</a></li>
+                    <li><a href="index.html#about">关于我</a></li>
+                    <li><a href="#">联系我</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>联系我</h3>
+                <p><i class="far fa-envelope"></i> kitty@example.com</p>
+                <p><i class="fas fa-paper-plane"></i> 上海市浦东新区Kitty大道</p>
+                <p><i class="fas fa-phone"></i> 123-4567-8910</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Hello Kitty の 小窝 | 设计与开发 by Kitty迷</p>
+        </div>
+    </footer>
+
+    <!-- 移动端菜单JS -->
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // 分类标签切换（简单实现，无筛选逻辑）
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1313 @@
+/* 全局样式 - 强化Kitty粉色系风格 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Comic Sans MS", "Microsoft YaHei", "幼圆", sans-serif;
+}
+
+:root {
+    /* 核心Kitty色系 */
+    --kitty-pink: #ff99cc;       /* 主粉色 */
+    --kitty-deep-pink: #ff66a3;  /* 深粉色 */
+    --kitty-light-pink: #ffcce5; /* 浅粉色 */
+    --kitty-bg: #fff5f8;         /* 背景色 */
+    --kitty-card: #ffffff;       /* 卡片背景 */
+    --kitty-text: #555555;       /* 主文字 */
+    --kitty-light-text: #777777; /* 次要文字 */
+    --kitty-hover: #ff3385;      /*  hover 色 */
+    --kitty-message: #fff0f5;    /* 留言/愿望背景 */
+    --kitty-border: #ffb3d1;     /* 边框色 */
+    --kitty-shadow: rgba(255, 153, 204, 0.2); /* 阴影色 */
+}
+
+.dark-mode {
+    --kitty-pink: #d46a9b;
+    --kitty-deep-pink: #c84a82;
+    --kitty-light-pink: #b85a80;
+    --kitty-bg: #2d2d42;
+    --kitty-card: #3d3d5c;
+    --kitty-text: #f5f5f5;
+    --kitty-light-text: #e0e0e0;
+    --kitty-hover: #ff99cc;
+    --kitty-message: #4a4a6a;
+    --kitty-border: #a04a78;
+    --kitty-shadow: rgba(212, 106, 155, 0.2);
+}
+
+body {
+    line-height: 1.6;
+    color: var(--kitty-text);
+    background-color: var(--kitty-bg);
+    /* Kitty专属背景图 - 更贴合主题 */
+    background-image: url("https://picsum.photos/id/141/2000/2000");
+    background-size: cover;
+    background-attachment: fixed;
+    background-blend-mode: soft-light;
+    scroll-behavior: smooth;
+    transition: all 0.3s ease;
+    padding-bottom: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+img.lazy {
+    opacity: 0;
+}
+
+img.lazy.loaded {
+    opacity: 1;
+    /* 图片加载后轻微放大，增加灵动性 */
+    transform: scale(1.02);
+}
+
+/* 回到顶部按钮 - 优化造型（Kitty蝴蝶结圆角） */
+.back-to-top {
+    position: fixed;
+    bottom: 160px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50% 50% 10px 50%; /* 蝴蝶结式圆角 */
+    background-color: var(--kitty-pink);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px var(--kitty-shadow);
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    border: 2px solid white;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-5px);
+}
+
+.back-to-top:hover {
+    background-color: var(--kitty-hover);
+    transform: translateY(-8px) rotate(5deg);
+}
+
+/* 暗黑模式切换按钮 - 同步造型 */
+.theme-toggle {
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50% 50% 50% 10px; /* 反向蝴蝶结圆角 */
+    background-color: var(--kitty-pink);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px var(--kitty-shadow);
+    z-index: 99;
+    transition: all 0.3s ease;
+    border: 2px solid white;
+}
+
+.theme-toggle:hover {
+    background-color: var(--kitty-hover);
+    transform: translateY(-5px) rotate(-5deg);
+}
+
+/* 导航栏 - 强化Kitty风格 */
+.header {
+    background: linear-gradient(135deg, var(--kitty-pink), var(--kitty-deep-pink));
+    box-shadow: 0 6px 20px var(--kitty-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.navbar {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.logo-text {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    letter-spacing: 1px;
+}
+
+.logo-text span {
+    color: #fff;
+    text-shadow: 0 0 8px rgba(255,255,255,0.8);
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    font-weight: 600;
+    color: white;
+    font-size: 1.1rem;
+    padding: 8px 15px;
+    border-radius: 20px;
+    position: relative;
+}
+
+/* 导航链接hover效果 - 蝴蝶结下划线 */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    border-radius: 1px;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+    background-color: white;
+    color: var(--kitty-deep-pink);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.nav-links a:hover::after {
+    width: 0;
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 1.8rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle:hover {
+    transform: rotate(15deg);
+}
+
+/* 内容区域通用样式 - 优化圆角和阴影 */
+.content-section {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: var(--kitty-card);
+    border-radius: 20px; /* 更圆润的边角 */
+    box-shadow: 0 8px 30px var(--kitty-shadow);
+    border: 3px solid var(--kitty-light-pink);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 内容区域顶部装饰条 */
+.content-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, var(--kitty-pink), var(--kitty-deep-pink), var(--kitty-pink));
+}
+
+.section-title {
+    font-size: 2rem;
+    color: var(--kitty-deep-pink);
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 2px 2px 4px var(--kitty-shadow);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+/* 标题下方Kitty风格装饰线 */
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--kitty-pink), transparent);
+    border-radius: 2px;
+}
+
+/* 首页区域样式 */
+.home-container {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* 博客列表样式 - 强化卡片质感 */
+.blog-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.blog-card {
+    background-color: var(--kitty-card);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px var(--kitty-shadow);
+    transition: all 0.4s ease;
+    border: 3px solid var(--kitty-light-pink);
+    position: relative;
+}
+
+/* 博客卡片角标装饰 */
+.blog-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    background-color: var(--kitty-light-pink);
+    border-radius: 0 0 0 20px;
+    opacity: 0.8;
+}
+
+.blog-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px var(--kitty-shadow);
+    border-color: var(--kitty-pink);
+}
+
+.blog-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-bottom: 3px solid var(--kitty-light-pink);
+    transition: all 0.3s ease;
+}
+
+.blog-card:hover img {
+    transform: scale(1.02);
+}
+
+.blog-content {
+    padding: 25px;
+}
+
+.category {
+    display: inline-block;
+    padding: 6px 15px;
+    background-color: var(--kitty-light-pink);
+    color: white;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    border: 2px solid var(--kitty-pink);
+    transition: all 0.3s ease;
+}
+
+.category:hover {
+    background-color: var(--kitty-deep-pink);
+    transform: scale(1.05);
+}
+
+.blog-title {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    color: var(--kitty-deep-pink);
+}
+
+.blog-title a:hover {
+    color: var(--kitty-hover);
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+
+.blog-desc {
+    color: var(--kitty-light-text);
+    margin-bottom: 20px;
+    line-height: 1.8;
+    background-color: var(--kitty-message);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid var(--kitty-pink);
+    transition: all 0.3s ease;
+}
+
+.blog-meta {
+    display: flex;
+    gap: 20px;
+    color: var(--kitty-light-text);
+    font-size: 0.9rem;
+}
+
+.blog-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.blog-meta i {
+    color: var(--kitty-pink);
+}
+
+/* 侧边栏样式 */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.author-card {
+    background-color: var(--kitty-card);
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 8px 25px var(--kitty-shadow);
+    border: 3px solid var(--kitty-light-pink);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* 作者卡片顶部蝴蝶结装饰 */
+.author-card::before {
+    content: '🎀';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+}
+
+.author-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 20px;
+    border: 5px solid var(--kitty-light-pink);
+    transition: all 0.3s ease;
+}
+
+.author-avatar:hover {
+    transform: rotate(10deg) scale(1.05);
+    border-color: var(--kitty-pink);
+}
+
+.author-name {
+    font-size: 1.4rem;
+    color: var(--kitty-deep-pink);
+    margin-bottom: 10px;
+}
+
+.author-bio {
+    color: var(--kitty-light-text);
+    margin-bottom: 20px;
+    background-color: var(--kitty-message);
+    padding: 12px;
+    border-radius: 10px;
+    border-left: 3px solid var(--kitty-pink);
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: var(--kitty-light-pink);
+    color: var(--kitty-deep-pink);
+    font-size: 1.2rem;
+    transition: all 0.3s;
+}
+
+.social-links a:hover {
+    background-color: var(--kitty-deep-pink);
+    color: white;
+    transform: rotate(15deg) scale(1.1);
+    box-shadow: 0 3px 8px var(--kitty-shadow);
+}
+
+.sidebar-section {
+    background-color: var(--kitty-card);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 25px var(--kitty-shadow);
+    border: 3px solid var(--kitty-light-pink);
+    transition: all 0.3s ease;
+}
+
+.sidebar-title {
+    font-size: 1.3rem;
+    color: var(--kitty-deep-pink);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--kitty-light-pink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sidebar-title i {
+    transform: rotate(5deg);
+}
+
+.category-list li {
+    margin-bottom: 12px;
+}
+
+.category-list a {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    color: var(--kitty-light-text);
+    border-radius: 8px;
+    background-color: var(--kitty-message);
+    transition: all 0.3s ease;
+}
+
+.category-list a:hover {
+    background-color: var(--kitty-light-pink);
+    color: var(--kitty-hover);
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px var(--kitty-shadow);
+}
+
+.category-list span {
+    background-color: var(--kitty-pink);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+}
+
+.recent-posts li {
+    margin-bottom: 15px;
+}
+
+.recent-posts a {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--kitty-message);
+    transition: all 0.3s ease;
+}
+
+.recent-posts a:hover {
+    background-color: var(--kitty-light-pink);
+    transform: translateX(3px);
+}
+
+.recent-posts img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 2px solid var(--kitty-light-pink);
+    border-radius: 10px;
+}
+
+.recent-posts h4 {
+    font-size: 0.95rem;
+    color: var(--kitty-deep-pink);
+    margin-bottom: 5px;
+}
+
+.recent-posts span {
+    font-size: 0.8rem;
+    color: var(--kitty-light-text);
+}
+
+/* 留言板样式 - 优化表单和列表 */
+.message-board {
+    background-color: var(--kitty-card);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 8px 25px var(--kitty-shadow);
+    border: 3px solid var(--kitty-light-pink);
+    transition: all 0.3s ease;
+}
+
+.message-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--kitty-deep-pink);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.form-group label::before {
+    content: '💖';
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 12px;
+    border: 2px solid var(--kitty-light-pink);
+    border-radius: 10px;
+    background-color: var(--kitty-message);
+    color: var(--kitty-text);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--kitty-pink);
+    box-shadow: 0 0 0 3px rgba(255, 153, 204, 0.2);
+    transform: translateY(-2px);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.submit-btn {
+    padding: 12px;
+    background: linear-gradient(135deg, var(--kitty-pink), var(--kitty-deep-pink));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px var(--kitty-shadow);
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px var(--kitty-shadow);
+    background: linear-gradient(135deg, var(--kitty-deep-pink), var(--kitty-hover));
+}
+
+.message-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* 滚动条美化 */
+.message-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.message-list::-webkit-scrollbar-track {
+    background: var(--kitty-message);
+    border-radius: 3px;
+}
+
+.message-list::-webkit-scrollbar-thumb {
+    background: var(--kitty-light-pink);
+    border-radius: 3px;
+}
+
+.message-list::-webkit-scrollbar-thumb:hover {
+    background: var(--kitty-pink);
+}
+
+.message-item {
+    padding: 15px;
+    background-color: var(--kitty-message);
+    border-radius: 10px;
+    border-left: 4px solid var(--kitty-pink);
+    transition: all 0.3s ease;
+}
+
+.message-item:hover {
+    transform: translateX(3px);
+    box-shadow: 0 2px 8px var(--kitty-shadow);
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.message-username {
+    font-weight: 600;
+    color: var(--kitty-deep-pink);
+}
+
+.message-time {
+    font-size: 0.8rem;
+    color: var(--kitty-light-text);
+}
+
+.message-content {
+    color: var(--kitty-text);
+    line-height: 1.6;
+}
+
+/* Kitty日记区域样式 - 卡片优化 */
+.diary-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.diary-card {
+    background-color: var(--kitty-message);
+    border-radius: 20px;
+    padding: 20px;
+    border: 3px solid var(--kitty-light-pink);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 日记卡片装饰点 */
+.diary-card::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 15px;
+    height: 15px;
+    background-color: var(--kitty-pink);
+    border-radius: 50%;
+    opacity: 0.7;
+}
+
+.diary-card::after {
+    content: '';
+    position: absolute;
+    top: 30px;
+    right: 15px;
+    width: 10px;
+    height: 10px;
+    background-color: var(--kitty-deep-pink);
+    border-radius: 50%;
+    opacity: 0.7;
+}
+
+.diary-card:hover {
+    transform: translateY(-5px) rotate(1deg);
+    box-shadow: 0 8px 20px var(--kitty-shadow);
+    border-color: var(--kitty-pink);
+}
+
+.diary-date {
+    display: inline-block;
+    padding: 5px 12px;
+    background-color: var(--kitty-light-pink);
+    color: white;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.diary-title {
+    font-size: 1.2rem;
+    color: var(--kitty-deep-pink);
+    margin-bottom: 10px;
+}
+
+.diary-content {
+    color: var(--kitty-light-text);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* 粉色收藏区域样式 */
+.collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.collection-item {
+    background-color: var(--kitty-card);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 3px solid var(--kitty-light-pink);
+    transition: all 0.3s ease;
+}
+
+.collection-item:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 20px var(--kitty-shadow);
+    border-color: var(--kitty-pink);
+}
+
+.collection-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 3px solid var(--kitty-light-pink);
+    transition: all 0.3s ease;
+}
+
+.collection-item:hover img {
+    filter: brightness(1.05);
+}
+
+.collection-info {
+    padding: 15px;
+}
+
+.collection-name {
+    font-size: 1.1rem;
+    color: var(--kitty-deep-pink);
+    margin-bottom: 8px;
+}
+
+.collection-desc {
+    color: var(--kitty-light-text);
+    font-size: 0.9rem;
+}
+
+/* 关于我区域样式 */
+.about-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    text-align: center;
+}
+
+.about-avatar {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 8px solid var(--kitty-light-pink);
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px var(--kitty-shadow);
+}
+
+.about-avatar:hover {
+    transform: rotate(5deg) scale(1.05);
+    border-color: var(--kitty-pink);
+}
+
+.about-text {
+    max-width: 800px;
+    color: var(--kitty-light-text);
+    line-height: 2;
+    background-color: var(--kitty-message);
+    padding: 25px;
+    border-radius: 20px;
+    border: 3px solid var(--kitty-light-pink);
+    transition: all 0.3s ease;
+}
+
+.about-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 15px;
+    background-color: var(--kitty-message);
+    border-radius: 15px;
+    min-width: 100px;
+    border: 2px solid var(--kitty-light-pink);
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    color: var(--kitty-deep-pink);
+    font-weight: bold;
+}
+
+.stat-label {
+    color: var(--kitty-light-text);
+    font-size: 0.9rem;
+}
+
+/* Hello Kitty 装饰元素 - 优化动画 */
+.kitty-decoration {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 120px;
+    height: 120px;
+    z-index: 99;
+    animation: float 4s ease-in-out infinite;
+    filter: drop-shadow(0 5px 8px var(--kitty-shadow));
+}
+
+@keyframes float {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(3deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+/* 页脚样式 - 强化渐变和装饰 */
+.footer {
+    background: linear-gradient(135deg, var(--kitty-pink), var(--kitty-deep-pink));
+    color: white;
+    padding: 50px 0 20px;
+    margin-top: 60px;
+    border-top: 8px solid white;
+    transition: all 0.3s ease;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-about h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-about p {
+    color: #fff0f5;
+    line-height: 1.8;
+}
+
+.footer-links ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-links a {
+    color: #fff0f5;
+    padding: 8px 0;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: white;
+    border-bottom: 2px solid white;
+    padding-left: 10px;
+    transform: translateX(5px);
+}
+
+.footer-contact h3 {
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.footer-contact p {
+    color: #fff0f5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 2px solid rgba(255,255,255,0.3);
+    color: #fff0f5;
+    font-size: 0.9rem;
+}
+
+/* 许愿树功能样式（融合Kitty风格）- 优化交互 */
+.wish-tree-section {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: var(--kitty-card);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px var(--kitty-shadow);
+    border: 3px solid var(--kitty-light-pink);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.wish-tree-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, var(--kitty-pink), var(--kitty-deep-pink), var(--kitty-pink));
+}
+
+.wish-counter {
+    text-align: center;
+    color: var(--kitty-light-text);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.wish-counter #wishCount {
+    color: var(--kitty-deep-pink);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.clear-wish-btn {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+#clearAllWishes {
+    color: var(--kitty-hover);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#clearAllWishes:hover {
+    opacity: 1;
+    transform: translateX(3px);
+}
+
+#clearAllWishes::before {
+    content: '🗑️';
+}
+
+.wish-input-area {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+}
+
+#wishInput {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 2px solid var(--kitty-light-pink);
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: var(--kitty-message);
+    color: var(--kitty-text);
+}
+
+#wishInput:focus {
+    border-color: var(--kitty-pink);
+    box-shadow: 0 0 0 3px rgba(255, 153, 204, 0.2);
+    transform: translateY(-2px);
+}
+
+#addWishBtn {
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(135deg, var(--kitty-pink), var(--kitty-deep-pink));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px var(--kitty-shadow);
+}
+
+#addWishBtn:hover {
+    background: linear-gradient(135deg, var(--kitty-deep-pink), var(--kitty-hover));
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px var(--kitty-shadow);
+}
+
+.wish-length-tip {
+    text-align: right;
+    color: var(--kitty-light-text);
+    font-size: 0.8rem;
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+}
+
+#wishLength {
+    color: var(--kitty-deep-pink);
+    font-weight: bold;
+}
+
+.wish-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.wish-list li {
+    padding: 1rem;
+    background-color: var(--kitty-message);
+    border-radius: 10px;
+    color: var(--kitty-text);
+    box-shadow: 0 2px 4px var(--kitty-shadow);
+    animation: fadeIn 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-left: 4px solid var(--kitty-pink);
+    transition: all 0.3s ease;
+}
+
+.wish-list li:hover {
+    transform: translateX(3px);
+    box-shadow: 0 4px 10px var(--kitty-shadow);
+}
+
+.wish-time {
+    font-size: 0.7rem;
+    color: var(--kitty-light-text);
+    margin-bottom: 0.5rem;
+}
+
+.wish-content {
+    word-break: break-all;
+    line-height: 1.6;
+}
+
+.wish-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.wish-actions button {
+    padding: 0.3rem 0.8rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.edit-wish-btn {
+    background: linear-gradient(135deg, var(--kitty-pink), var(--kitty-deep-pink));
+    color: white;
+}
+
+.delete-wish-btn {
+    background: linear-gradient(135deg, var(--kitty-hover), #ff1a75);
+    color: white;
+}
+
+.wish-actions button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.empty-wish-tip {
+    text-align: center;
+    color: var(--kitty-light-text);
+    padding: 2rem;
+    font-size: 1rem;
+    background-color: var(--kitty-message);
+    border-radius: 10px;
+    border: 2px dashed var(--kitty-light-pink);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 响应式设计 - 优化移动端体验 */
+@media (max-width: 992px) {
+    .home-container {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .diary-list, .collection-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+    .about-stats {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, var(--kitty-pink), var(--kitty-deep-pink));
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        display: none;
+        border-radius: 0 0 20px 20px;
+        z-index: 999;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    .blog-card img {
+        height: 220px;
+    }
+
+    .kitty-decoration {
+        width: 80px;
+        height: 80px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .wish-input-area {
+        flex-direction: column;
+    }
+
+    .back-to-top, .theme-toggle {
+        width: 40px;
+        height: 40px;
+        right: 20px;
+    }
+
+    .back-to-top {
+        bottom: 140px;
+    }
+
+    .content-section {
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        height: 70px;
+    }
+
+    .logo-text {
+        font-size: 1.5rem;
+    }
+
+    .logo img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .diary-list, .collection-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-avatar {
+        width: 140px;
+        height: 140px;
+    }
+
+    .stat-item {
+        min-width: 80px;
+        padding: 10px;
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+    }
+}

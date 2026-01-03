@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Kitty の 小窝 | 许愿树</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Comic Sans MS", "Microsoft YaHei", sans-serif;
+        }
+
+        :root {
+            --primary-color: #ff99cc;
+            --secondary-color: #ff66a3;
+            --light-color: #ffcce5;
+            --bg-color: #fff5f8;
+            --card-bg: #ffffff;
+            --text-color: #555555;
+            --light-text: #777777;
+            --hover-color: #ff3385;
+            --message-bg: #fff0f5;
+        }
+
+        .dark-mode {
+            --primary-color: #d46a9b;
+            --secondary-color: #c84a82;
+            --light-color: #b85a80;
+            --bg-color: #2d2d42;
+            --card-bg: #3d3d5c;
+            --text-color: #f5f5f5;
+            --light-text: #e0e0e0;
+            --hover-color: #ff99cc;
+            --message-bg: #4a4a6a;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            background-image: url("https://picsum.photos/id/141/1000/1000");
+            background-size: cover;
+            background-attachment: fixed;
+            background-blend-mode: soft-light;
+            scroll-behavior: smooth;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            border-radius: 12px;
+            transition: opacity 0.3s ease;
+        }
+
+        img.lazy {
+            opacity: 0;
+        }
+
+        img.lazy.loaded {
+            opacity: 1;
+        }
+
+        /* 回到顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 160px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 153, 204, 0.3);
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 暗黑模式切换按钮 */
+        .theme-toggle {
+            position: fixed;
+            bottom: 90px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 153, 204, 0.3);
+            z-index: 99;
+            transition: all 0.3s ease;
+        }
+
+        /* 导航栏样式 */
+        .header {
+            background-color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(255, 153, 204, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .logo-text span {
+            color: var(--hover-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            color: white;
+            font-size: 1.1rem;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .nav-links a.active,
+        .nav-links a:hover {
+            background-color: white;
+            color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* 内容区域通用样式 */
+        .content-section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(255, 153, 204, 0.2);
+            border: 3px solid var(--light-color);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(255, 153, 204, 0.2);
+        }
+
+        /* 首页区域样式 */
+        .home-container {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* 博客列表样式 */
+        .blog-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .blog-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(255, 153, 204, 0.2);
+            transition: all 0.4s ease;
+            border: 3px solid var(--light-color);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(255, 153, 204, 0.3);
+            border-color: var(--primary-color);
+        }
+
+        .blog-card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-bottom: 3px solid var(--light-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .blog-content {
+            padding: 25px;
+        }
+
+        .category {
+            display: inline-block;
+            padding: 6px 15px;
+            background-color: var(--light-color);
+            color: white;
+            font-size: 0.9rem;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            border: 2px solid var(--primary-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .blog-title {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        .blog-title a:hover {
+            color: var(--hover-color);
+            text-decoration: underline;
+        }
+
+        .blog-desc {
+            color: var(--light-text);
+            margin-bottom: 20px;
+            line-height: 1.8;
+            background-color: var(--message-bg);
+            padding: 15px;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .blog-meta {
+            display: flex;
+            gap: 20px;
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .blog-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* 侧边栏样式 */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .author-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(255, 153, 204, 0.2);
+            border: 3px solid var(--light-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .author-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            border: 5px solid var(--light-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .author-name {
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .author-bio {
+            color: var(--light-text);
+            margin-bottom: 20px;
+            background-color: var(--message-bg);
+            padding: 12px;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: var(--secondary-color);
+            color: white;
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .sidebar-section {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(255, 153, 204, 0.2);
+            border: 3px solid var(--light-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar-title {
+            font-size: 1.3rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--light-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .category-list li {
+            margin-bottom: 12px;
+        }
+
+        .category-list a {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            color: var(--light-text);
+            border-radius: 8px;
+            background-color: var(--message-bg);
+            transition: all 0.3s ease;
+        }
+
+        .category-list a:hover {
+            background-color: var(--light-color);
+            color: var(--hover-color);
+            transform: translateX(5px);
+        }
+
+        .recent-posts li {
+            margin-bottom: 15px;
+        }
+
+        .recent-posts a {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: var(--message-bg);
+            transition: all 0.3s ease;
+        }
+
+        .recent-posts a:hover {
+            background-color: var(--light-color);
+        }
+
+        .recent-posts img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border: 2px solid var(--light-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .recent-posts h4 {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+
+        .recent-posts span {
+            font-size: 0.8rem;
+            color: var(--light-text);
+        }
+
+        /* 留言板样式 */
+        .message-board {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(255, 153, 204, 0.2);
+            border: 3px solid var(--light-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .message-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 12px;
+            border: 2px solid var(--light-color);
+            border-radius: 8px;
+            background-color: var(--message-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 153, 204, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(255, 153, 204, 0.2);
+        }
+
+        .message-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .message-item {
+            padding: 15px;
+            background-color: var(--message-bg);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .message-username {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .message-time {
+            font-size: 0.8rem;
+            color: var(--light-text);
+        }
+
+        .message-content {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Kitty日记区域样式 */
+        .diary-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .diary-card {
+            background-color: var(--message-bg);
+            border-radius: 16px;
+            padding: 20px;
+            border: 3px solid var(--light-color);
+            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .diary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 153, 204, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .diary-date {
+            display: inline-block;
+            padding: 5px 12px;
+            background-color: var(--light-color);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .diary-title {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .diary-content {
+            color: var(--light-text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* 粉色收藏区域样式 */
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .collection-item {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 3px solid var(--light-color);
+            transition: all 0.3s ease;
+            transition: background-color 0.3s ease;
+        }
+
+        .collection-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 153, 204, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .collection-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 3px solid var(--light-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .collection-info {
+            padding: 15px;
+        }
+
+        .collection-name {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+        }
+
+        .collection-desc {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        /* 关于我区域样式 */
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            text-align: center;
+        }
+
+        .about-avatar {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 8px solid var(--light-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .about-text {
+            max-width: 800px;
+            color: var(--light-text);
+            line-height: 2;
+            background-color: var(--message-bg);
+            padding: 25px;
+            border-radius: 16px;
+            border: 3px solid var(--light-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .about-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        /* Hello Kitty 装饰元素 */
+        .kitty-decoration {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 120px;
+            height: 120px;
+            z-index: 99;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* 页脚样式 */
+        .footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 60px;
+            border-top: 5px solid var(--secondary-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-about h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-about p {
+            color: #fff0f5;
+        }
+
+        .footer-links ul {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: #fff0f5;
+            padding: 8px 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            border-bottom: 2px solid white;
+            padding-left: 10px;
+        }
+
+        .footer-contact h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .footer-contact p {
+            color: #fff0f5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid var(--secondary-color);
+            color: #fff0f5;
+            font-size: 0.9rem;
+        }
+
+        /* 许愿树功能样式（融合Kitty风格） */
+        .wish-tree-section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(255, 153, 204, 0.2);
+            border: 3px solid var(--light-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .wish-counter {
+            text-align: center;
+            color: var(--light-text);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .wish-counter #wishCount {
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .clear-wish-btn {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        #clearAllWishes {
+            color: var(--hover-color);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        #clearAllWishes:hover {
+            opacity: 1;
+        }
+
+        .wish-input-area {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        #wishInput {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--light-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+            background-color: var(--message-bg);
+            color: var(--text-color);
+        }
+
+        #wishInput:focus {
+            border-color: var(--primary-color);
+        }
+
+        #addWishBtn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        #addWishBtn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .wish-length-tip {
+            text-align: right;
+            color: var(--light-text);
+            font-size: 0.8rem;
+            margin-top: -1rem;
+            margin-bottom: 1rem;
+        }
+
+        #wishLength {
+            color: var(--secondary-color);
+        }
+
+        .wish-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .wish-list li {
+            padding: 1rem;
+            background-color: var(--message-bg);
+            border-radius: 8px;
+            color: var(--text-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+            animation: fadeIn 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            border-left: 4px solid var(--primary-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .wish-time {
+            font-size: 0.7rem;
+            color: var(--light-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .wish-content {
+            word-break: break-all;
+        }
+
+        .wish-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .wish-actions button {
+            padding: 0.3rem 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .edit-wish-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .delete-wish-btn {
+            background-color: var(--hover-color);
+            color: white;
+        }
+
+        .wish-actions button:hover {
+            opacity: 0.8;
+        }
+
+        .empty-wish-tip {
+            text-align: center;
+            color: var(--light-text);
+            padding: 2rem;
+            font-size: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .home-container {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .diary-list, .collection-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 80px;
+                left: 0;
+                right: 0;
+                background-color: var(--primary-color);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                display: none;
+                border-radius: 0 0 15px 15px;
+                transition: background-color 0.3s ease;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-card img {
+                height: 220px;
+            }
+
+            .kitty-decoration {
+                width: 80px;
+                height: 80px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .about-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .wish-input-area {
+                flex-direction: column;
+            }
+
+            .back-to-top, .theme-toggle {
+                width: 40px;
+                height: 40px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="https://c-ssl.dtstatic.com/uploads/item/201410/16/20141016023223_Ycfus.thumb.1000_0.jpeg" alt="Hello Kitty Logo">
+                <div class="logo-text">Hello<span>Kitty</span></div>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="active" data-section="home">首页</a></li>
+                <li><a href="#diary" data-section="diary">Kitty日记</a></li>
+                <li><a href="#collection" data-section="collection">粉色收藏</a></li>
+                <li><a href="#wish-tree" data-section="wish-tree">Kitty许愿树</a></li>
+                <li><a href="#about" data-section="about">关于我</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 首页区域 -->
+    <section id="home" class="section">
+        <div class="home-container">
+            <!-- 博客列表 -->
+            <section class="blog-list">
+                <article class="blog-card">
+                    <img src="https://ts1.tc.mm.bing.net/th/id/R-C.0e3bb30e3e71afc7f5c7aff751cd0b19?rik=i1hKq9oyWhVUCg&riu=http%3a%2f%2fwww.quazero.com%2fuploads%2fallimg%2f131122%2f1-131122200U2.jpg&ehk=gTd50def0YycVIoh%2bT6Js%2fy7VOJEEu8Vg4%2bV1nj%2bZ%2bE%3d&risl=&pid=ImgRaw&r=0" alt="Hello Kitty主题" class="lazy">
+                    <div class="blog-content">
+                        <span class="category">Kitty日常</span>
+                        <h2 class="blog-title"><a href="kitty-story.html" target="_blank">Hello Kitty的诞生故事</a></h2>
+                        <p class="blog-desc">Hello Kitty诞生于1974年，由日本三丽鸥公司的设计师清水侑子设计。她是一只永远保持纯真可爱的白色小猫，没有嘴巴的设计让每个人都能投射自己的情绪...</p>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 2025-11-20</span>
+                            <span><i class="far fa-user"></i> Kitty迷</span>
+                            <span><i class="far fa-comment"></i> 28条评论</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <img src="https://p1.ssl.qhmsg.com/t0107584095a52e3664.jpg" alt="粉色收藏" class="lazy">
+                    <div class="blog-content">
+                        <span class="category">收藏分享</span>
+                        <h2 class="blog-title"><a href="collection-detail.html" target="_self">我的Hello Kitty珍藏周边</a></h2>
+                        <p class="blog-desc">从玩偶、文具到生活用品，Hello Kitty的周边产品总能让粉色控心动不已。分享我多年收藏的限量版Kitty玩偶和实用小物...</p>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 2024-02-28</span>
+                            <span><i class="far fa-user"></i> Kitty迷</span>
+                            <span><i class="far fa-comment"></i> 36条评论</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <img src="https://ts1.tc.mm.bing.net/th/id/R-C.67c0d0aa8a4183bc284d185519326167?rik=Umatcfielvo8lw&riu=http%3a%2f%2fwww.quazero.com%2fuploads%2fallimg%2f130706%2f1-130F61I034.jpg&ehk=UBFvqYy9e2fyXLVchCCmsj4AsgyLlh2ZhltY3xL7a1Y%3d&risl=&pid=ImgRaw&r=0" alt="三丽鸥家族" class="lazy">
+                    <div class="blog-content">
+                        <span class="category">三丽鸥家族</span>
+                        <h2 class="blog-title"><a href="friends-detail.html" target="_self">Hello Kitty的朋友们</a></h2>
+                        <p class="blog-desc">Kitty不是孤单的哦！她有可爱的双胞胎妹妹Mimmy、淘气的朋友Chococat、温柔的My Melody，还有酷酷的酷企鹅BAD BADTZ-MARU...</p>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> 2024-02-10</span>
+                            <span><i class="far fa-user"></i> Kitty迷</span>
+                            <span><i class="far fa-comment"></i> 22条评论</span>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- 侧边栏 -->
+            <aside class="sidebar">
+                <div class="author-card">
+                    <img src="https://c-ssl.duitang.com/uploads/blog/202406/07/8gS4m1bVUg3g71a.png" alt="作者头像" class="author-avatar lazy">
+                    <h3 class="author-name">关于我</h3>
+                    <p class="author-bio">一名喜欢hello Kitty的大学生，在这里记录自己喜欢的东西</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-wechat"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">分类专栏</h3>
+                    <ul class="category-list">
+                        <li><a href="#">Kitty历史 <span>(12)</span></a></li>
+                        <li><a href="#">周边收藏 <span>(28)</span></a></li>
+                        <li><a href="#">三丽鸥家族 <span>(15)</span></a></li>
+                        <li><a href="#">粉色日常 <span>(22)</span></a></li>
+                        <li><a href="#">主题探店 <span>(8)</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">最新文章</h3>
+                    <ul class="recent-posts">
+                        <li>
+                            <a href="#">
+                                <img src="https://c-ssl.duitang.com/uploads/item/201508/12/20150812111006_HXraj.jpeg" alt="文章缩略图" class="lazy">
+                                <div>
+                                    <h4>Hello Kitty的诞生故事</h4>
+                                    <span>2024-03-15</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="https://c-ssl.duitang.com/uploads/blog/202304/26/20230426085713_e8b0d.jpeg" alt="文章缩略图" class="lazy">
+                                <div>
+                                    <h4>我的Hello Kitty珍藏周边</h4>
+                                    <span>2024-02-28</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="https://c-ssl.duitang.com/uploads/item/201507/31/20150731150002_2aH4n.jpeg" alt="文章缩略图" class="lazy">
+                                <div>
+                                    <h4>Hello Kitty的朋友们</h4>
+                                    <span>2024-02-10</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 留言板模块 -->
+                <div class="message-board">
+                    <h3 class="sidebar-title"><i class="fas fa-comment-dots"></i> 留言板</h3>
+                    <!-- 留言表单 -->
+                    <form class="message-form" id="messageForm">
+                        <div class="form-group">
+                            <label for="username">你的昵称</label>
+                            <input type="text" id="username" placeholder="请输入你的昵称" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">留言内容</label>
+                            <textarea id="message" placeholder="和Kitty说句话吧～" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">发送留言</button>
+                    </form>
+                    <!-- 留言列表 -->
+                    <div class="message-list" id="messageList">
+                        <!-- 默认留言 -->
+                        <div class="message-item">
+                            <div class="message-header">
+                                <span class="message-username">Kitty官方</span>
+                                <span class="message-time">2024-01-01 10:00</span>
+                            </div>
+                            <div class="message-content">欢迎来到我的小窝～ 留下你的足迹吧！</div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- Kitty日记区域 -->
+    <section id="diary" class="content-section section">
+        <h2 class="section-title"><i class="fas fa-book"></i> Kitty日记</h2>
+        <div class="diary-list">
+            <div class="diary-card">
+                <span class="diary-date">2024-05-20</span>
+                <h3 class="diary-title">和Mimmy的下午茶时光</h3>
+                <p class="diary-content">今天和妹妹Mimmy一起喝了草莓味的下午茶，还吃了粉色的马卡龙，阳光洒在窗台上，太幸福啦～</p>
+            </div>
+            <div class="diary-card">
+                <span class="diary-date">2024-05-15</span>
+                <h3 class="diary-title">新入手的Kitty水杯</h3>
+                <p class="diary-content">今天收到了新的Hello Kitty水杯，粉粉的杯身还有蝴蝶结装饰，喝水都变得更开心了！</p>
+            </div>
+            <div class="diary-card">
+                <span class="diary-date">2024-05-10</span>
+                <h3 class="diary-title">三丽鸥乐园一日游</h3>
+                <p class="diary-content">今天去了三丽鸥乐园，见到了My Melody和Kuromi，还坐了Kitty主题的旋转木马，超开心！</p>
+            </div>
+            <div class="diary-card">
+                <span class="diary-date">2024-05-05</span>
+                <h3 class="diary-title">整理我的Kitty周边</h3>
+                <p class="diary-content">周末整理了我的Kitty周边，发现已经攒了满满一柜子，每一个都好喜欢，舍不得放下～</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 粉色收藏区域 -->
+    <section id="collection" class="content-section section">
+        <h2 class="section-title"><i class="fas fa-gem"></i> 粉色收藏</h2>
+        <div class="collection-grid">
+            <div class="collection-item">
+                <img src="https://cbu01.alicdn.com/img/ibank/O1CN01SLuvyG1xW9b2TH1WS_!!2215549406450-0-cib.jpg" alt="限量版Kitty玩偶" class="lazy">
+                <div class="collection-info">
+                    <h3 class="collection-name">限量版Kitty玩偶</h3>
+                    <p class="collection-desc">2024年情人节限定款，粉色爱心蝴蝶结超可爱～</p>
+                </div>
+            </div>
+            <div class="collection-item">
+                <img src="https://cbu01.alicdn.com/img/ibank/O1CN01kPVMXe1yrVX5dHBe7_!!2209622826632-0-cib.jpg" alt="Kitty文具套装" class="lazy">
+                <div class="collection-info">
+                    <h3 class="collection-name">Kitty文具套装</h3>
+                    <p class="collection-desc">包含笔记本、钢笔、便利贴，学习都变得有动力了～</p>
+                </div>
+            </div>
+            <div class="collection-item">
+                <img src="https://cbu01.alicdn.com/img/ibank/O1CN01v2dQOF1wOzt6MbDaL_!!2212513176299-0-cib.jpg" alt="Kitty水杯" class="lazy">
+                <div class="collection-info">
+                    <h3 class="collection-name">Kitty玻璃水杯</h3>
+                    <p class="collection-desc">高硼硅玻璃材质，耐热防摔，颜值与实用并存～</p>
+                </div>
+            </div>
+            <div class="collection-item">
+                <img src="https://cbu01.alicdn.com/img/ibank/O1CN0115PILT2FZVZs5h35v_!!2829888894-0-cib.jpg" alt="Kitty抱枕" class="lazy">
+                <div class="collection-info">
+                    <h3 class="collection-name">Kitty毛绒抱枕</h3>
+                    <p class="collection-desc">柔软的短毛绒材质，抱着睡觉超舒服～</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kitty许愿树区域（融合的核心功能） -->
+    <section id="wish-tree" class="wish-tree-section section">
+        <h2 class="section-title"><i class="fas fa-tree"></i> Kitty许愿树</h2>
+        
+        <!-- 愿望计数 -->
+        <p class="wish-counter">
+            目前一共有 <span id="wishCount">0</span> 个愿望 🍀
+        </p>
+
+        <!-- 清空全部按钮 -->
+        <div class="clear-wish-btn">
+            <button id="clearAllWishes">清空全部愿望</button>
+        </div>
+
+        <!-- 输入区域 -->
+        <div class="wish-input-area">
+            <input id="wishInput" type="text" placeholder="写下你的愿望…" maxlength="100" />
+            <button id="addWishBtn">挂到许愿树上</button>
+        </div>
+
+        <!-- 输入长度提示 -->
+        <div class="wish-length-tip">
+            <span id="wishLength">0</span>/100
+        </div>
+
+        <!-- 许愿树列表 -->
+        <ul id="wishList" class="wish-list"></ul>
+    </section>
+
+    <!-- 关于我区域 -->
+    <section id="about" class="content-section section">
+        <h2 class="section-title"><i class="fas fa-user-circle"></i> 关于我</h2>
+        <div class="about-content">
+            <img src="https://c-ssl.duitang.com/uploads/blog/202406/07/8gS4m1bVUg3g71a.png" alt="我的头像" class="about-avatar lazy">
+            <div class="about-text">
+                <p>大家好呀～我是一名热爱Hello Kitty的大学生，从初中开始就被Kitty的可爱所吸引，从此走上了收集Kitty周边的道路～</p>
+                <br>
+                <p>创建这个小窝的初衷是为了分享我对Hello Kitty的喜爱，记录和Kitty相关的日常，也希望能认识更多志同道合的Kitty迷～</p>
+                <br>
+                <p>在这里你可以看到我收集的各种Kitty周边、我的Kitty日记，还有三丽鸥家族的小知识，希望大家喜欢～</p>
+            </div>
+            <div class="about-stats">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Kitty周边</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3年</div>
+                    <div class="stat-label">收藏时长</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">日记篇数</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hello Kitty装饰 -->
+    <img src="https://c-ssl.dtstatic.com/uploads/blog/202208/05/20220805125956_e95da.thumb.1000_0.jpg" alt="Hello Kitty" class="kitty-decoration lazy">
+
+    <!-- 回到顶部按钮 -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- 暗黑模式切换按钮 -->
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-about">
+                <h3>Hello Kitty の 小窝</h3>
+                <p>分享Hello Kitty的一切美好，记录粉色系的可爱日常～</p>
+            </div>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#diary">Kitty日记</a></li>
+                    <li><a href="#collection">粉色收藏</a></li>
+                    <li><a href="#wish-tree">Kitty许愿树</a></li>
+                    <li><a href="#about">关于我</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>联系我</h3>
+                <p><i class="far fa-envelope"></i> kitty@example.com</p>
+                <p><i class="fas fa-paper-plane"></i> 上海市浦东新区Kitty大道</p>
+                <p><i class="fas fa-phone"></i> 123-4567-8910</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Hello Kitty の 小窝 | 设计与开发 by Kitty迷</p>
+        </div>
+    </footer>
+
+    <script>
+        // 图片懒加载
+        document.addEventListener('DOMContentLoaded', function() {
+            const lazyImages = document.querySelectorAll('img.lazy');
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.getAttribute('src');
+                        img.classList.add('loaded');
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            lazyImages.forEach(img => {
+                imageObserver.observe(img);
+            });
+        });
+
+        // 移动端菜单切换
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // 导航栏激活状态切换
+        const navItems = document.querySelectorAll('.nav-links a');
+        const sections = document.querySelectorAll('.section');
+
+        // 点击导航项切换激活状态
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                e.target.classList.add('active');
+                navLinks.classList.remove('active');
+                menuToggle.querySelector('i').classList.remove('fa-times');
+                menuToggle.querySelector('i').classList.add('fa-bars');
+            });
+        });
+
+        // 滚动时切换导航激活状态
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-section') === current) {
+                    item.classList.add('active');
+                }
+            });
+
+            // 控制回到顶部按钮显示
+            const backToTop = document.getElementById('backToTop');
+            if (scrollY > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        // 回到顶部功能
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 暗黑模式切换
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // 从本地存储读取主题
+        if (localStorage.getItem('darkMode') === 'true') {
+            body.classList.add('dark-mode');
+            themeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            const icon = themeToggle.querySelector('i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        });
+
+        // 留言板功能（本地存储）
+        const messageForm = document.getElementById('messageForm');
+        const messageList = document.getElementById('messageList');
+        const usernameInput = document.getElementById('username');
+        const messageInput = document.getElementById('message');
+
+        function getMessages() {
+            return JSON.parse(localStorage.getItem('kittyMessages')) || [];
+        }
+
+        function saveMessage(message) {
+            const messages = getMessages();
+            messages.unshift(message);
+            localStorage.setItem('kittyMessages', JSON.stringify(messages));
+        }
+
+        function renderMessages() {
+            const messages = getMessages();
+            const defaultMessage = messageList.querySelector('.message-item');
+            messageList.innerHTML = '';
+            if (defaultMessage) messageList.appendChild(defaultMessage);
+            
+            messages.forEach(msg => {
+                const messageItem = document.createElement('div');
+                messageItem.className = 'message-item';
+                messageItem.innerHTML = `
+                    <div class="message-header">
+                        <span class="message-username">${msg.username}</span>
+                        <span class="message-time">${msg.time}</span>
+                    </div>
+                    <div class="message-content">${msg.content}</div>
+                `;
+                messageList.appendChild(messageItem);
+            });
+        }
+
+        messageForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = usernameInput.value.trim();
+            const content = messageInput.value.trim();
+            
+            if (!username || !content) {
+                alert('昵称和留言内容都不能为空哦～');
+                return;
+            }
+
+            const now = new Date();
+            const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+            const newMessage = {
+                username,
+                content,
+                time: timeStr
+            };
+            saveMessage(newMessage);
+            renderMessages();
+            usernameInput.value = '';
+            messageInput.value = '';
+            alert('留言发送成功！🥰');
+        });
+
+        // 许愿树功能（融合到Kitty主题）
+        const wishInput = document.getElementById('wishInput');
+        const addWishBtn = document.getElementById('addWishBtn');
+        const wishList = document.getElementById('wishList');
+        const wishCountSpan = document.getElementById('wishCount');
+        const clearAllWishesBtn = document.getElementById('clearAllWishes');
+        const wishLengthSpan = document.getElementById('wishLength');
+
+        // 初始化愿望列表
+        let wishes = JSON.parse(localStorage.getItem('kittyWishes')) || [];
+
+        // 渲染愿望列表
+        function renderWishes() {
+            wishList.innerHTML = '';
+            wishCountSpan.textContent = wishes.length;
+
+            if (wishes.length === 0) {
+                wishList.innerHTML = '<li class="empty-wish-tip">暂无愿望，写下你的第一个愿望吧 ✨</li>';
+                return;
+            }
+
+            wishes.forEach((wish, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="wish-time">${wish.time}</span>
+                    <div class="wish-content" data-index="${index}">${wish.content}</div>
+                    <div class="wish-actions">
+                        <button class="edit-wish-btn" data-index="${index}">编辑</button>
+                        <button class="delete-wish-btn" data-index="${index}">删除</button>
+                    </div>
+                `;
+                wishList.appendChild(li);
+            });
+        }
+
+        // 添加愿望
+        function addWish() {
+            const content = wishInput.value.trim();
+            if (!content) {
+                alert('愿望不能为空哦！😜');
+                return;
+            }
+
+            const now = new Date();
+            const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+            wishes.unshift({ content, time: timeStr });
+            localStorage.setItem('kittyWishes', JSON.stringify(wishes));
+            renderWishes();
+            wishInput.value = '';
+            wishLengthSpan.textContent = '0';
+        }
+
+        // 删除愿望
+        function deleteWish(index) {
+            if (confirm('确定要删除这个愿望吗？🥺')) {
+                wishes.splice(index, 1);
+                localStorage.setItem('kittyWishes', JSON.stringify(wishes));
+                renderWishes();
+            }
+        }
+
+        // 编辑愿望
+        function editWish(index) {
+            const wish = wishes[index];
+            const newContent = prompt('编辑你的愿望', wish.content);
+            if (newContent === null) return;
+            if (newContent.trim() === '') {
+                alert('愿望不能为空哦！😜');
+                return;
+            }
+
+            wishes[index].content = newContent.trim();
+            localStorage.setItem('kittyWishes', JSON.stringify(wishes));
+            renderWishes();
+        }
+
+        // 清空全部愿望
+        function clearAllWishes() {
+            if (wishes.length === 0) {
+                alert('暂无愿望可清空！😜');
+                return;
+            }
+            if (confirm('确定要清空所有愿望吗？此操作不可恢复！🥺')) {
+                wishes = [];
+                localStorage.removeItem('kittyWishes');
+                renderWishes();
+            }
+        }
+
+        // 绑定许愿树事件
+        wishInput.addEventListener('input', () => {
+            wishLengthSpan.textContent = wishInput.value.length;
+        });
+
+        addWishBtn.addEventListener('click', addWish);
+
+        wishInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') addWish();
+        });
+
+        wishList.addEventListener('click', (e) => {
+            const index = e.target.dataset.index;
+            if (e.target.classList.contains('edit-wish-btn')) {
+                editWish(index);
+            } else if (e.target.classList.contains('delete-wish-btn')) {
+                deleteWish(index);
+            }
+        });
+
+        clearAllWishesBtn.addEventListener('click', clearAllWishes);
+
+        // 页面加载时渲染留言和愿望
+        window.addEventListener('load', () => {
+            renderMessages();
+            renderWishes();
+        });
+    </script>
+</body>
+</html>
